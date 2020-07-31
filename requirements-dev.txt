@@ -1,0 +1,8 @@
+# Requirement for development
+-r requirements.txt
+coverage==5.2.*
+pep257==0.7.*
+pylint==2.5.*
+pycodestyle==2.6.*
+recommonmark==0.6.*
+Sphinx==1.8.*

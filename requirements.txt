@@ -1,0 +1,3 @@
+# Runtime requirements
+# NOTE: Keep setup.py in sync!
+tinytag==1.4.*
