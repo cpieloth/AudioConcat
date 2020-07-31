@@ -6,34 +6,38 @@ import datetime
 import logging
 import pathlib
 import subprocess
+import tempfile
+
+from audioconcat.audio_files import AudioFiles
+from audioconcat.file_system import get_leaf_files
+from audioconcat.file_system import FolderFiles
 
 
 logger = logging.getLogger(__name__)
 
 
 class FfmpegConcat:
+    """
+    Concat a list of files using FFmpeg.
+    """
 
     def __init__(self):
         # TODO: Make path or command configurable, support for Windows and Linux.
         self.exec = pathlib.Path(r'C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe')
 
     def concat(self, files, output):
-        import tempfile
+        # using temp dir to enable write and read to a temp file by different processes on some platforms
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            tmp_input_path = pathlib.Path(tmp_dir) / 'input.txt'
+            with tmp_input_path.open('w') as input_file:
+                input_file.writelines(['file \'{}\'\n'.format(str(file.resolve())) for file in files])
 
-        with tempfile.TemporaryDirectory() as td:
-            f_name = pathlib.Path(td) / 'input.txt'
-            with f_name.open('w') as fh:
-                fh.writelines(['file \'{}\'\n'.format(str(file.resolve())) for file in files])
-
-            cmd = [str(self.exec), '-nostats', '-loglevel',  'info', '-safe', '0', '-f', 'concat',
-                   '-i', str(f_name.resolve()), '-acodec', 'copy', str(output.resolve())]
+            cmd = [str(self.exec), '-nostats', '-loglevel', 'info', '-safe', '0', '-f', 'concat',
+                   '-i', str(tmp_input_path.resolve()), '-acodec', 'copy', str(output.resolve())]
             subprocess.check_call(cmd)
 
 
 def retrieve_and_concat_audio_files(input_dir, output_dir):
-    from audioconcat.file_system import get_leaf_files
-    from audioconcat.file_system import FolderFiles
-
     for files in get_leaf_files(input_dir):
         try:
             folder_files = FolderFiles(files)
@@ -44,8 +48,6 @@ def retrieve_and_concat_audio_files(input_dir, output_dir):
 
 
 def concat_audio_files(folder_files, output_dir):
-    from audioconcat.audio_files import AudioFiles
-
     audio_files = AudioFiles(folder_files)
     logger.debug('audio_files=%s', audio_files)
     if len(audio_files.folder_files.extensions) > 1:

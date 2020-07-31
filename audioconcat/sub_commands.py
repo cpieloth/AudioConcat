@@ -1,6 +1,10 @@
 """Module for CLI command implementations."""
 
 import abc
+import pathlib
+
+import audioconcat.concat
+
 
 __author__ = 'christof.pieloth'
 
@@ -83,15 +87,12 @@ class ConcatCmd(SubCommand):
 
     @classmethod
     def _add_arguments(cls, parser):
-        parser.add_argument('--input-dir', '-i',  nargs='+', required=True, help='Directory to start recursive search.')
+        parser.add_argument('--input-dir', '-i', nargs='+', required=True, help='Directory to start recursive search.')
         parser.add_argument('--output-dir', '-o', required=True, help='Directory to store output files.')
         return parser
 
     @classmethod
     def execute(cls, args):
-        import pathlib
-        import audioconcat.concat
-
         output_dir = pathlib.Path(args.output_dir)
 
         for input_dir in args.input_dir:

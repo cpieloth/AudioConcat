@@ -11,7 +11,7 @@ import audioconcat.util
 logger = logging.getLogger(__name__)
 
 
-def get_leaf_files(folder, whitelist=['.mp3', '.wma']):
+def get_leaf_files(folder, whitelist=None):
     """
     Generator to retrieve a list of files per folder.
 
@@ -19,13 +19,16 @@ def get_leaf_files(folder, whitelist=['.mp3', '.wma']):
     :param whitelist: Whitelist of file extensions to include.
     :return: A list of all files matching the whitelist in one folder.
     """
+    if whitelist is None:
+        whitelist = ['.mp3', '.wma']
+
     path = pathlib.Path(folder)
     files = []
 
     for path in path.iterdir():
         if path.is_dir():
-            for foo in get_leaf_files(path):
-                yield foo
+            for sub_files in get_leaf_files(path):
+                yield sub_files
         if path.is_file():
             if path.suffix in whitelist:
                 files.append(path)
@@ -37,7 +40,7 @@ def get_leaf_files(folder, whitelist=['.mp3', '.wma']):
 
 def check_and_get_directory(files):
     """
-    Check if all provided files have in the same directory and return it.
+    Check if all provided files have the same directory and return it.
 
     :param files: A list of files to check and get directory from.
     :return: Base directory of the files.
@@ -54,11 +57,14 @@ def check_and_get_directory(files):
     tail_parent = check_and_get_directory(tail)
     if head.parent == tail_parent:
         return head.parent
-    else:
-        raise RuntimeError('Files do not have the same directory: {} != {}'.format(head.parent, tail_parent))
+
+    raise RuntimeError('Files do not have the same directory: {} != {}'.format(head.parent, tail_parent))
 
 
 class FolderFiles:
+    """
+    Container class for files of one folder.
+    """
 
     def __init__(self, files):
         self.files = files
