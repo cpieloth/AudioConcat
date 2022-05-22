@@ -11,9 +11,11 @@ def remove_special_characters(input_str):
     :return: String without special characters.
     """
     replacements = [(',', ''), (';', ''), (':', ''),
-                    (' & ', ' '), ('?', ''), ('!', ''),
-                    ('(', ''), (')', ''),
-                    ('ä', 'ae'), ('ö', 'oe'), ('ü', 'ue'), ('ß', 'sz')]
+                    ('/', ''), ('\\', ''),
+                    (' & ', ' '), ('&', ' '), ('?', ''), ('!', ''),
+                    ('`', ''), ('´', ''), ('\'', ''), ('"', ''),
+                    ('(', ''), (')', ''), ('[', ''), (']', ''), ('{', ''), ('}', ''),
+                    ('Ä', 'Ae'), ('ä', 'ae'), ('Ö', 'Oe'), ('ö', 'oe'),  ('Ü', 'Ue'), ('ü', 'ue'), ('ß', 'sz')]
 
     for replacment in replacements:
         input_str = input_str.replace(replacment[0], replacment[1])
