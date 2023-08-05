@@ -17,7 +17,7 @@ def remove_special_characters(input_str):
                     ('(', ''), (')', ''), ('[', ''), (']', ''), ('{', ''), ('}', ''),
                     ('Ä', 'Ae'), ('ä', 'ae'), ('Ö', 'Oe'), ('ö', 'oe'),  ('Ü', 'Ue'), ('ü', 'ue'), ('ß', 'sz')]
 
-    for replacment in replacements:
-        input_str = input_str.replace(replacment[0], replacment[1])
+    for replacement in replacements:
+        input_str = input_str.replace(replacement[0], replacement[1])
 
     return input_str.strip()

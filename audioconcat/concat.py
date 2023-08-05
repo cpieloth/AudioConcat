@@ -31,7 +31,9 @@ class FfmpegConcat:
         with tempfile.TemporaryDirectory() as tmp_dir:
             tmp_input_path = pathlib.Path(tmp_dir) / 'input.txt'
             with tmp_input_path.open('w') as input_file:
-                input_file.writelines(['file \'{}\'\n'.format(str(file.resolve())) for file in files])
+                # see https://ffmpeg.org/ffmpeg-utils.html#toc-Quoting-and-escaping
+                input_file.writelines(
+                    ['file \'{}\'\n'.format(str(file.resolve()).replace('\'', '\'\\\'\'')) for file in files])
 
             cmd = [str(self.exec), '-nostats', '-loglevel', 'info', '-safe', '0', '-f', 'concat',
                    '-i', str(tmp_input_path.resolve()), '-acodec', 'copy', str(output.resolve())]
