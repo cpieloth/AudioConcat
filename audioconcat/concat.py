@@ -21,9 +21,10 @@ class FfmpegConcat:
     Concat a list of files using FFmpeg.
     """
 
-    def __init__(self):
-        # TODO: Make path or command configurable, support for Windows and Linux.
-        self.exec = pathlib.Path(r'C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe')
+    def __init__(self, ffmpeg_exec):
+        if not ffmpeg_exec.exists():
+            raise FileNotFoundError('FFmpeg executable not found: {}'.format(ffmpeg_exec))
+        self.exec = ffmpeg_exec
 
     def concat(self, files, output):
         # using temp dir to enable write and read to a temp file by different processes on some platforms
@@ -37,17 +38,18 @@ class FfmpegConcat:
             subprocess.check_call(cmd)
 
 
-def retrieve_and_concat_audio_files(input_dir, output_dir):
+def retrieve_and_concat_audio_files(input_dir, output_dir, ffmpeg_exec):
+    ffmpeg = FfmpegConcat(ffmpeg_exec)
     for files in get_leaf_files(input_dir):
         try:
             folder_files = FolderFiles(files)
             logger.debug('folder_files=%s', folder_files)
-            concat_audio_files(folder_files, output_dir)
+            concat_audio_files(folder_files, output_dir, ffmpeg.concat)
         except:
             logger.exception('Could not concat files: %s', files)
 
 
-def concat_audio_files(folder_files, output_dir):
+def concat_audio_files(folder_files, output_dir, concat_impl):
     audio_files = AudioFiles(folder_files)
     logger.debug('audio_files=%s', audio_files)
     if len(audio_files.folder_files.extensions) > 1:
@@ -63,5 +65,4 @@ def concat_audio_files(folder_files, output_dir):
 
     logger.debug('output_file=%s', output_file.resolve())
 
-    ffmpeg = FfmpegConcat()
-    ffmpeg.concat(audio_files.folder_files.files, output_file)
+    concat_impl(audio_files.folder_files.files, output_file)

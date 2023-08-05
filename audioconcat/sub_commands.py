@@ -1,6 +1,7 @@
 """Module for CLI command implementations."""
 
 import abc
+import os
 import pathlib
 
 import audioconcat.concat
@@ -89,13 +90,17 @@ class ConcatCmd(SubCommand):
     def _add_arguments(cls, parser):
         parser.add_argument('--input-dir', '-i', nargs='+', required=True, help='Directory to start recursive search.')
         parser.add_argument('--output-dir', '-o', required=True, help='Directory to store output files.')
+        parser.add_argument('--ffmpeg-exec', '-e', help='Path to FFmpeg executable.',
+                            default=os.getenv('FFMPEG_EXEC',
+                                              pathlib.Path(r'C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe')))
         return parser
 
     @classmethod
     def execute(cls, args):
         output_dir = pathlib.Path(args.output_dir)
+        ffmpeg_exec = pathlib.Path(args.ffmpeg_exec)
 
         for input_dir in args.input_dir:
-            audioconcat.concat.retrieve_and_concat_audio_files(pathlib.Path(input_dir), output_dir)
+            audioconcat.concat.retrieve_and_concat_audio_files(pathlib.Path(input_dir), output_dir, ffmpeg_exec)
 
         return 0

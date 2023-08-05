@@ -2,10 +2,12 @@
 
 ## Requirements
 
-* Windows (Linux or MacOS requires manual changes)
+* Windows (not tested on Linux or MacOS)
 * Python 3.4 or later
-* FFmpeg, located at `C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe`
-  * `audioconcat.concat.FfmpegConcat.exec` must be modified for non-Windows operating systems
+* FFmpeg
+  * default location: `C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe`
+  * configure via CLI with `--ffmpeg-exec` or `-e`, or
+  * configure via environment variable `FFMPEG_EXEC`
   * tested with `ffmpeg-20200724-21442a8-win64-static.zip`
 * Audio files must be sorted into folders, e.g. one folder for each album
 
