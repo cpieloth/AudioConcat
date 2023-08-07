@@ -29,7 +29,7 @@ class TestCheckAndGetDirectory(unittest.TestCase):
 class TestGetLeafFiles(unittest.TestCase):
 
     def test_non_empty(self):
-        tests_dir = pathlib.Path(__file__).parent.parent
+        tests_dir = pathlib.Path(__file__).parent
         folders_count = 0
 
         for files in get_leaf_files(tests_dir, whitelist=['.py']):

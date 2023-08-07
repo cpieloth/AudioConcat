@@ -1,0 +1,5 @@
+[tool.setuptools_scm]
+
+[build-system]
+requires = ["setuptools", "setuptools_scm[toml]"]
+build-backend = "setuptools.build_meta"
