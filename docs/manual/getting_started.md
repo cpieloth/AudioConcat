@@ -19,7 +19,7 @@
 3. Install python package:
 
 ```bash
-$ pip install git+git://github.com/cpieloth/AudioConcat@master#egg=AudioConcat
+$ pip install git+https://github.com/cpieloth/AudioConcat.git@master#egg=AudioConcat
 ```
 
 

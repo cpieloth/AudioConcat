@@ -10,6 +10,13 @@ charset = utf-8
 end_of_line = lf
 insert_final_newline = true
 
+[*.ini]
+indent_style = space
+indent_size = 4
+
+[*.md]
+indent_style = space
+
 # Python style
 # https://www.python.org/dev/peps/pep-0008
 # https://www.python.org/dev/peps/pep-0257
@@ -17,6 +24,3 @@ insert_final_newline = true
 indent_style = space
 indent_size = 4
 max_line_length = 120
-
-[*.md]
-indent_style = space
