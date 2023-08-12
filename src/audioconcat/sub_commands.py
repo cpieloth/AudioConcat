@@ -91,8 +91,8 @@ class ConcatCmd(SubCommand):
         parser.add_argument('--input-dir', '-i', nargs='+', required=True, help='Directory to start recursive search.')
         parser.add_argument('--output-dir', '-o', required=True, help='Directory to store output files.')
         parser.add_argument('--ffmpeg-exec', '-e', help='Path to FFmpeg executable.',
-                            default=os.getenv('FFMPEG_EXEC',
-                                              pathlib.Path(r'C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe')))
+                            default=os.getenv(
+                                'FFMPEG_EXEC', r'C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe'))
         return parser
 
     @classmethod

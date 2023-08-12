@@ -3,7 +3,7 @@
 ## Requirements
 
 * Windows (not tested on Linux or MacOS)
-* Python 3.4 or later
+* Python 3, tested on v3.10 and v3.11
 * FFmpeg
   * default location: `C:\Programs_unpacked\ffmpeg-win64-static\bin\ffmpeg.exe`
   * configure via CLI with `--ffmpeg-exec` or `-e`, or

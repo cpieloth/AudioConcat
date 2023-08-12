@@ -30,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11"]  # use: latest
+        python-version: ["3.10"]  # latest ubuntu LTS
 
     steps:
     - uses: actions/checkout@v3
@@ -41,7 +41,7 @@ jobs:
     - name: Install dependencies
       run: python -m pip install -r requirements.txt
     - name: Generate HTML
-      run: python -m tox -e docs
+      run: python -m tox run -e docs
     - name: Setup Pages
       uses: actions/configure-pages@v3
     - name: Upload artifact

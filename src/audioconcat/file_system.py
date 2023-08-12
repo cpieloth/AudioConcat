@@ -7,7 +7,6 @@ import pathlib
 
 import audioconcat.util
 
-
 logger = logging.getLogger(__name__)
 
 
@@ -58,7 +57,7 @@ def check_and_get_directory(files):
     if head.parent == tail_parent:
         return head.parent
 
-    raise RuntimeError('Files do not have the same directory: {} != {}'.format(head.parent, tail_parent))
+    raise RuntimeError(f'Files do not have the same directory: {head.parent} != {tail_parent}')
 
 
 class FolderFiles:
@@ -82,5 +81,5 @@ class FolderFiles:
         return extensions
 
     def __str__(self):
-        return '{}: name={}, files={}, extensions={}, dir={}'.format(self.__class__.__name__, self.name,
-                                                                     len(self.files), len(self.extensions), self.dir)
+        return (f'{self.__class__.__name__}: name={self.name}, '
+                f'files={len(self.files)}, extensions={len(self.extensions)}, dir={self.dir}')

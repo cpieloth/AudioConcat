@@ -19,7 +19,7 @@ The first call of tox usually takes some time, further calls are faster.
 Generate documentation which is placed at `build/docs/`:
 
 ```bash
-$ tox -e docs
+$ tox run -e docs
 ```
 
 
@@ -28,7 +28,7 @@ $ tox -e docs
 Run unit tests in *developer*/*editable* mode:
 
 ```bash
-$ tox --develop -e unit_tests
+$ tox run --develop -e unit_tests
 ```
 
 

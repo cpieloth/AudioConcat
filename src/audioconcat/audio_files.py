@@ -33,7 +33,7 @@ def check_and_get_album_from_id3(files):
     if album == tail_album:
         return album
 
-    raise RuntimeError('Album differs: {} != {}'.format(album, tail_album))
+    raise RuntimeError(f'Album differs: {album} != {tail_album}')
 
 
 def check_and_get_artist_from_id3(files):
@@ -58,7 +58,7 @@ def check_and_get_artist_from_id3(files):
     if artist == tail_artist:
         return artist
 
-    raise RuntimeError('Artist differs: {} != {}'.format(artist, tail_artist))
+    raise RuntimeError(f'Artist differs: {artist} != {tail_artist}')
 
 
 class AudioFiles:
@@ -74,19 +74,19 @@ class AudioFiles:
         artist = None
         try:
             artist = check_and_get_artist_from_id3(self.folder_files.files)
-        except Exception as ex:
+        except Exception as ex:  # pylint: disable=W0703
             logger.warning('Can not use artist for name, reason: %s', ex)
 
         try:
             album = check_and_get_album_from_id3(self.folder_files.files)
-        except Exception as ex:
+        except Exception as ex:  # pylint: disable=W0703
             logger.warning('Can not use album for name, reason: %s Try to use folder name.', ex)
             album = self.folder_files.name
 
         if artist and album:
-            return '{} - {}'.format(remove_special_characters(artist), remove_special_characters(album))
-        else:
-            return '{}'.format(remove_special_characters(album))
+            return f'{remove_special_characters(artist)} - {remove_special_characters(album)}'
+
+        return f'{remove_special_characters(album)}'
 
     def __str__(self):
-        return '{}: name={}, folder_files={}'.format(self.__class__.__name__, self.name, self.folder_files)
+        return f'{self.__class__.__name__}: name={self.name}, folder_files={self.folder_files}'

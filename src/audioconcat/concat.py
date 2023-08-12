@@ -16,14 +16,14 @@ from audioconcat.file_system import FolderFiles
 logger = logging.getLogger(__name__)
 
 
-class FfmpegConcat:
+class FfmpegConcat:  # pylint: disable=R0903
     """
     Concat a list of files using FFmpeg.
     """
 
     def __init__(self, ffmpeg_exec):
         if not ffmpeg_exec.exists():
-            raise FileNotFoundError('FFmpeg executable not found: {}'.format(ffmpeg_exec))
+            raise FileNotFoundError(f'FFmpeg executable not found: {ffmpeg_exec}')
         self.exec = ffmpeg_exec
 
     def concat(self, files, output):
@@ -47,7 +47,7 @@ def retrieve_and_concat_audio_files(input_dir, output_dir, ffmpeg_exec):
             folder_files = FolderFiles(files)
             logger.debug('folder_files=%s', folder_files)
             concat_audio_files(folder_files, output_dir, ffmpeg.concat)
-        except:
+        except:  # noqa: E722  pylint: disable=W0702
             logger.exception('Could not concat files: %s', files)
 
 
@@ -55,15 +55,13 @@ def concat_audio_files(folder_files, output_dir, concat_impl):
     audio_files = AudioFiles(folder_files)
     logger.debug('audio_files=%s', audio_files)
     if len(audio_files.folder_files.extensions) > 1:
-        raise RuntimeError('Too many file types in folder: {}'.format(audio_files.folder_files.extensions))
+        raise RuntimeError(f'Too many file types in folder: {audio_files.folder_files.extensions}')
 
-    output_file = output_dir / '{}{}'.format(audio_files.name, next(iter(audio_files.folder_files.extensions)))
+    output_file = output_dir / f'{audio_files.name}{next(iter(audio_files.folder_files.extensions))}'
     if output_file.exists():
         logger.warning('File already exists: %s. Adding timestamp to name.', output_file)
         time = datetime.datetime.now().strftime('%Y%m%dT%H%M%S')
-        output_file = output_dir / '{}_{}{}'.format(audio_files.name,
-                                                    time,
-                                                    next(iter(audio_files.folder_files.extensions)))
+        output_file = output_dir / f'{audio_files}_{time}{next(iter(audio_files.folder_files.extensions))}'
 
     logger.debug('output_file=%s', output_file.resolve())
 
