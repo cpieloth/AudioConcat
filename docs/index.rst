@@ -17,6 +17,7 @@ The generated files can be used for MP3 players with limited navigation capabili
    manual/getting_started
    manual/folder_structure
    manual/getting_started_for_developers
+   CHANGELOG.link
    apidoc/audioconcat
 
 
