@@ -1,2 +1,2 @@
 # Runtime requirements
-tinytag==1.4.*
+tinytag==1.9.*
